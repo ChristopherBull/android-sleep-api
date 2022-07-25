@@ -47,6 +47,8 @@ captures/
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
+# Ignore misc.xml, which sometimes contains per-install relative paths (or possibly sensitive data)
+.idea/misc.xml
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 
