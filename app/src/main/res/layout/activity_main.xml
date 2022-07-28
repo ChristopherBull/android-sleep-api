@@ -66,16 +66,26 @@
         app:layout_constraintBottom_toBottomOf="@id/txtStatusSleepDataTitle"
         app:layout_constraintLeft_toRightOf="@id/txtStatusSleepDataTitle" />
 
+    <Button
+        android:id="@+id/btnRefreshSleepData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Refresh"
+        android:onClick="refreshSleepDataViews"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusSleepDataTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
     <TextView
         android:id="@+id/sleepDataContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
         android:scrollbars="vertical"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtStatusSleepDataTitle" />
+        app:layout_constraintTop_toBottomOf="@id/btnRefreshSleepData" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -141,6 +142,10 @@ class MainActivity : AppCompatActivity() {
         }
         // Show timestamp of last read
         findViewById<TextView>(R.id.txtStatusSleepData).text = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+    }
+
+    fun refreshSleepDataViews(view: View) {
+        showSleepDataOnUI(view.context)
     }
 
     override fun onResume() {
