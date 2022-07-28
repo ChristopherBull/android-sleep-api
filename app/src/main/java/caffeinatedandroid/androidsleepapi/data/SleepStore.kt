@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.google.android.gms.location.SleepClassifyEvent
 import com.google.android.gms.location.SleepSegmentEvent
+import java.io.File
 import java.io.FileNotFoundException
 
 /**
@@ -13,6 +14,14 @@ class SleepStore {
     companion object {
         const val TAG = "SleepStore"
         const val fileName: String = "sleepData.dat"
+
+        fun init(context: Context) {
+            val file = File(context.filesDir, fileName)
+            if(!file.exists()) {
+                Log.d(TAG, "Creating file for sleep data.")
+                file.createNewFile()
+            }
+        }
     }
 
     fun addSleepSegments(context: Context, sleepSegmentEvents: List<SleepSegmentEvent>) {

@@ -16,6 +16,8 @@ import caffeinatedandroid.androidsleepapi.data.SleepStore
 import caffeinatedandroid.androidsleepapi.receiver.SleepReceiver
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.SleepSegmentRequest
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -28,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Ensure the files for storing data are created
+        SleepStore.init(this)
 
         // Preparation of intents before registering for sleep updates
         val context = applicationContext
@@ -130,9 +135,11 @@ class MainActivity : AppCompatActivity() {
         // Show existing sleep data in the UI
         val data = SleepStore().readAllData(context)
         if (data.isEmpty()) {
-            findViewById<TextView>(R.id.txtStatusSleepData).text = "<No data>"
+            findViewById<TextView>(R.id.sleepDataContent).text = "<No data: empty file>"
         } else {
-            findViewById<TextView>(R.id.txtStatusSleepData).text = data
+            findViewById<TextView>(R.id.sleepDataContent).text = data
         }
+        // Show timestamp of last read
+        findViewById<TextView>(R.id.txtStatusSleepData).text = "Read: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
     }
 }
