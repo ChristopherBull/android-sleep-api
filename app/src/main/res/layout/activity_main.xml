@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Permission Status: "
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/txtStatusPermission"
@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="unknown"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@id/txtStatusPermissionTitle"
         app:layout_constraintLeft_toRightOf="@id/txtStatusPermissionTitle"
         app:layout_constraintRight_toRightOf="parent" />
@@ -43,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="unknown"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@id/txtStatusSleepUpdatesTitle"
         app:layout_constraintLeft_toRightOf="@id/txtStatusSleepUpdatesTitle" />
 
@@ -50,7 +52,7 @@
         android:id="@+id/txtStatusSleepDataTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sleep data: "
+        android:text="Sleep data last read: "
         android:textStyle="bold"
         app:layout_constraintRight_toRightOf="@id/txtStatusSleepUpdatesTitle"
         app:layout_constraintTop_toBottomOf="@id/txtStatusSleepUpdatesTitle" />
@@ -60,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="unknown"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@id/txtStatusSleepDataTitle"
         app:layout_constraintLeft_toRightOf="@id/txtStatusSleepDataTitle" />
 

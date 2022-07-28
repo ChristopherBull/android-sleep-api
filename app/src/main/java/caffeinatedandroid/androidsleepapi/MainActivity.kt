@@ -140,6 +140,6 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.sleepDataContent).text = data
         }
         // Show timestamp of last read
-        findViewById<TextView>(R.id.txtStatusSleepData).text = "Read: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        findViewById<TextView>(R.id.txtStatusSleepData).text = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
     }
 }
