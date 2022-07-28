@@ -2,18 +2,77 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainActivityLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:id="@+id/MainActivityLayout">
+    tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/txtStatusPermissionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Permission Status: "
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/txtStatusPermission"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtStatusPermission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="unknown"
+        app:layout_constraintBottom_toBottomOf="@id/txtStatusPermissionTitle"
+        app:layout_constraintLeft_toRightOf="@id/txtStatusPermissionTitle"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/txtStatusSleepUpdatesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sleep updates: "
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintRight_toRightOf="@id/txtStatusPermissionTitle"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusPermissionTitle" />
+
+    <TextView
+        android:id="@+id/txtStatusSleepUpdates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="unknown"
+        app:layout_constraintBottom_toBottomOf="@id/txtStatusSleepUpdatesTitle"
+        app:layout_constraintLeft_toRightOf="@id/txtStatusSleepUpdatesTitle" />
+
+    <TextView
+        android:id="@+id/txtStatusSleepDataTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sleep data: "
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="@id/txtStatusSleepUpdatesTitle"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusSleepUpdatesTitle" />
+
+    <TextView
+        android:id="@+id/txtStatusSleepData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="unknown"
+        app:layout_constraintBottom_toBottomOf="@id/txtStatusSleepDataTitle"
+        app:layout_constraintLeft_toRightOf="@id/txtStatusSleepDataTitle" />
+
+    <TextView
+        android:id="@+id/sleepDataContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:scrollbars="vertical"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/txtStatusSleepDataTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

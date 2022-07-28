@@ -9,8 +9,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import caffeinatedandroid.androidsleepapi.data.SleepStore
 import caffeinatedandroid.androidsleepapi.receiver.SleepReceiver
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.SleepSegmentRequest
@@ -18,7 +20,7 @@ import com.google.android.gms.location.SleepSegmentRequest
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "MainActivity"
-         private const val PERMISSION_REQUEST_CODE_ACTIVITY_RECOGNITION = 1000
+        private const val PERMISSION_REQUEST_CODE_ACTIVITY_RECOGNITION = 1000
     }
 
     private lateinit var sleepPendingIntent: PendingIntent
@@ -44,10 +46,13 @@ class MainActivity : AppCompatActivity() {
                 if (isGranted) {
                     // Permission granted.
                     Log.d(TAG, "Permission granted: ACTIVITY_RECOGNITION")
+                    findViewById<TextView>(R.id.txtStatusPermission).text = "Granted"
                     registerForSleepUpdates(applicationContext)
+                    showSleepDataOnUI(context)
                 } else {
                     // Permission declined.
                     Log.d(TAG, "Permission declined: ACTIVITY_RECOGNITION")
+                    findViewById<TextView>(R.id.txtStatusPermission).text = "Declined"
                     // Inform user of unavailable features.
                     AlertDialog.Builder(this)
                         .setMessage("Sleep tracking is only available if the Activity Recognition permission is granted. You can activate this later.")
@@ -64,7 +69,9 @@ class MainActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // Permission granted.
                 Log.d(TAG, "Permission granted: ACTIVITY_RECOGNITION")
+                findViewById<TextView>(R.id.txtStatusPermission).text = "Granted (previously)"
                 registerForSleepUpdates(applicationContext)
+                showSleepDataOnUI(context)
             }
             shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION) -> {
                 // Show rationale for required permission. Must include a no/cancel option.
@@ -85,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                         ) { _, _ ->
                             // User cancelled the dialog
                             Log.d(TAG, "Permission request cancelled by user (Activity Recognition).")
+                            findViewById<TextView>(R.id.txtStatusPermission).text = "Request cancelled by user"
                         }
                     }
                     // Create the AlertDialog
@@ -110,9 +118,21 @@ class MainActivity : AppCompatActivity() {
                 SleepSegmentRequest.getDefaultSleepSegmentRequest())
             .addOnSuccessListener {
                 Log.d(TAG, "Successfully subscribed to sleep data.")
+                findViewById<TextView>(R.id.txtStatusSleepUpdates).text = "Subscribed"
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "Exception when subscribing to sleep data: $exception")
+                findViewById<TextView>(R.id.txtStatusSleepUpdates).text = "Error"
             }
+    }
+
+    private fun showSleepDataOnUI(context: Context) {
+        // Show existing sleep data in the UI
+        val data = SleepStore().readAllData(context)
+        if (data.isEmpty()) {
+            findViewById<TextView>(R.id.txtStatusSleepData).text = "<No data>"
+        } else {
+            findViewById<TextView>(R.id.txtStatusSleepData).text = data
+        }
     }
 }
