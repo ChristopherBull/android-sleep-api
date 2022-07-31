@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,11 +38,16 @@ class MainActivity : AppCompatActivity() {
 
         // Preparation of intents before registering for sleep updates
         val context = applicationContext
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_CANCEL_CURRENT
+        }
         sleepPendingIntent = PendingIntent.getBroadcast(
             context,
             PERMISSION_REQUEST_CODE_ACTIVITY_RECOGNITION,
             Intent(context, SleepReceiver::class.java),
-            PendingIntent.FLAG_CANCEL_CURRENT + PendingIntent.FLAG_IMMUTABLE
+            flags
         )
 
         // Prepare handling of permission request response from user
