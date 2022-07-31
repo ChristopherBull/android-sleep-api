@@ -25,18 +25,18 @@ class SleepStore {
     }
 
     fun addSleepSegments(context: Context, sleepSegmentEvents: List<SleepSegmentEvent>) {
-        val data: String = sleepSegmentEvents.joinToString()
+        val data: String = sleepSegmentEvents.joinToString(separator = ";\n", prefix = "Segment: ")
         appendData(context, data)
     }
 
     fun addSleepClassifications(context: Context, sleepClassifyEvents: List<SleepClassifyEvent>) {
-        val data: String = sleepClassifyEvents.joinToString()
+        val data: String = sleepClassifyEvents.joinToString(separator = ";\n", prefix = "Classification: ")
         appendData(context, data)
     }
 
     private fun appendData(context: Context, data: String) {
         context.openFileOutput(fileName, Context.MODE_APPEND).use {
-            it.write(data.toByteArray())
+            it.write(data.plus("\n\n").toByteArray())
         }
     }
 

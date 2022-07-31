@@ -77,15 +77,25 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <TextView
-        android:id="@+id/sleepDataContent"
-        android:layout_width="0dp"
+    <ScrollView
+        android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:scrollbars="vertical"
-        android:text=""
+        android:fillViewport="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRefreshSleepData" />
+        app:layout_constraintTop_toBottomOf="@id/btnRefreshSleepData">
+
+        <TextView
+            android:id="@+id/sleepDataContent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
