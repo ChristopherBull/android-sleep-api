@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         // Preparation of intents before registering for sleep updates
         val context = applicationContext
         val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
+            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         } else {
             PendingIntent.FLAG_CANCEL_CURRENT
         }

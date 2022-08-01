@@ -55,7 +55,7 @@ if (SleepSegmentEvent.hasEvents(intent)) {
 }
 ```
 
-You should update your Manifest with the name and location of you `BroadcastReceiver`. Update the name field to the correct package and class name of your Sleep Boradcast Receiver:
+You should update your Manifest with the name and location of you `BroadcastReceiver`. Update the name field to the correct package and class name of your Sleep Broadcast Receiver:
 
 ```xml
 <manifest>
