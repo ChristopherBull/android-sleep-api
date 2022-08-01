@@ -55,6 +55,20 @@ if (SleepSegmentEvent.hasEvents(intent)) {
 }
 ```
 
+You should update your Manifest with the name and location of you `BroadcastReceiver`. Update the name field to the correct package and class name of your Sleep Boradcast Receiver:
+
+```xml
+<manifest>
+    <application>
+        <receiver
+            android:name=".receiver.SleepReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.ACTIVITY_RECOGNITION" />
+    </application>
+</manifest>
+```
+
 Prepare an intent prior to registering for sleep updates using the above BroadcastReceiver:
 
 ```kotlin
