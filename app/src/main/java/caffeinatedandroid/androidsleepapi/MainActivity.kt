@@ -1,13 +1,9 @@
 package caffeinatedandroid.androidsleepapi
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,40 +11,21 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import caffeinatedandroid.androidsleepapi.data.SleepStore
-import caffeinatedandroid.androidsleepapi.receiver.SleepReceiver
-import com.google.android.gms.location.ActivityRecognition
-import com.google.android.gms.location.SleepSegmentRequest
+import caffeinatedandroid.androidsleepapi.manager.SleepManager
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "MainActivity"
-        private const val PERMISSION_REQUEST_CODE_ACTIVITY_RECOGNITION = 1000
     }
-
-    private lateinit var sleepPendingIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Ensure the files for storing data are created
+        // Ensure storage is initialised.
         SleepStore.init(this)
-
-        // Preparation of intents before registering for sleep updates
-        val context = applicationContext
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_CANCEL_CURRENT
-        }
-        sleepPendingIntent = PendingIntent.getBroadcast(
-            context,
-            PERMISSION_REQUEST_CODE_ACTIVITY_RECOGNITION,
-            Intent(context, SleepReceiver::class.java),
-            flags
-        )
 
         // Prepare handling of permission request response from user
         val requestPermissionLauncher =
@@ -59,8 +36,13 @@ class MainActivity : AppCompatActivity() {
                     // Permission granted.
                     Log.d(TAG, "Permission granted: ACTIVITY_RECOGNITION")
                     findViewById<TextView>(R.id.txtStatusPermission).text = "Granted"
-                    registerForSleepUpdates(applicationContext)
-                    showSleepDataOnUI(context)
+                    SleepManager.registerForSleepUpdates(
+                        applicationContext,
+                        // Callback functions
+                        ::registerForSleepUpdatesOnSuccess,
+                        ::registerForSleepUpdatesOnFailure
+                    )
+                    showSleepDataOnUI(applicationContext)
                 } else {
                     // Permission declined.
                     Log.d(TAG, "Permission declined: ACTIVITY_RECOGNITION")
@@ -82,8 +64,13 @@ class MainActivity : AppCompatActivity() {
                 // Permission granted.
                 Log.d(TAG, "Permission granted: ACTIVITY_RECOGNITION")
                 findViewById<TextView>(R.id.txtStatusPermission).text = "Granted (previously)"
-                registerForSleepUpdates(applicationContext)
-                showSleepDataOnUI(context)
+                SleepManager.registerForSleepUpdates(
+                    applicationContext,
+                    // Callback functions
+                    ::registerForSleepUpdatesOnSuccess,
+                    ::registerForSleepUpdatesOnFailure
+                )
+                showSleepDataOnUI(applicationContext)
             }
             shouldShowRequestPermissionRationale(Manifest.permission.ACTIVITY_RECOGNITION) -> {
                 // Show rationale for required permission. Must include a no/cancel option.
@@ -121,21 +108,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun registerForSleepUpdates(context: Context) {
-        // Register for sleep updates
-        ActivityRecognition.getClient(context)
-            .requestSleepSegmentUpdates(
-                sleepPendingIntent,
-                SleepSegmentRequest.getDefaultSleepSegmentRequest())
-            .addOnSuccessListener {
-                Log.d(TAG, "Successfully subscribed to sleep data.")
-                findViewById<TextView>(R.id.txtStatusSleepUpdates).text = "Subscribed"
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "Exception when subscribing to sleep data: $exception")
-                findViewById<TextView>(R.id.txtStatusSleepUpdates).text = "Error"
-            }
+    private fun registerForSleepUpdatesOnSuccess() {
+        findViewById<TextView>(R.id.txtStatusSleepUpdates).text = "Subscribed"
+    }
+
+    private fun registerForSleepUpdatesOnFailure(exception: Exception) {
+        findViewById<TextView>(R.id.txtStatusSleepUpdates).text = "Error"
     }
 
     private fun showSleepDataOnUI(context: Context) {

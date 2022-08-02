@@ -95,3 +95,31 @@ ActivityRecognition.getClient(context)
         Log.d(TAG, "Exception when subscribing to sleep data: $exception")
     }
 ```
+
+## Re-register for Sleep Updates after System Boot
+
+When a device is rebooted, the `BroadcastReceiver` needs to be re-registered. For passive apps, such as sleep monitoring, it is best to do this at device boot rather than waiting for a user to open the app. You will need to update the `AndroidManifest.xml`:
+
+```xml
+<manifest>
+    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    
+    <application>
+        
+        <receiver
+            android:name=".receiver.BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+        
+    </application>
+</manifest>
+```
+
+You will also need to create a `BroadcastReciever` to receive the Boot action. An example can be seen in [`.receiver.BootReceiver`](app/src/main/java/caffeinatedandroid/androidsleepapi/receiver/BootReceiver.kt).
