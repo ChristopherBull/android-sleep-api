@@ -123,3 +123,45 @@ When a device is rebooted, the `BroadcastReceiver` needs to be re-registered. Fo
 ```
 
 You will also need to create a `BroadcastReciever` to receive the Boot action. An example can be seen in [`.receiver.BootReceiver`](app/src/main/java/caffeinatedandroid/androidsleepapi/receiver/BootReceiver.kt).
+
+## Disable Auto-Revoking Permissions
+
+Newer versions of Android [automatically remove permissions previously granted to apps](https://developer.android.com/about/versions/11/privacy/permissions#auto-reset) if the app is not used for a few months. This is typically desirable in most apps, but if your app is primarily used for passive monitoring where the user won't open the app directly (e.g., using the Sleep API and sending the data to a server), then Android will determine that the app is not being used and remove permissions. In these situations, this automatic removal of permissions is undesirable.
+
+You can detect if your app is set to have permissions automatically removed. A user has to manually disable this feature in the app's permissions page, however, we can help the user by opening the app's general settings page for them, to more easily guide a user to disable this feature.
+
+```kotlin
+private fun updateAutoRevokePermissions(context: Context, checkOnly: Boolean = false) {
+    val future: ListenableFuture<Int> = PackageManagerCompat.getUnusedAppRestrictionsStatus(context)
+    future.addListener(
+        { onResult(future.get(), checkOnly) },
+        ContextCompat.getMainExecutor(context)
+    )
+}
+
+private fun onResult(appRestrictionsStatus: Int, checkOnly: Boolean) {
+    when (appRestrictionsStatus) {
+        ERROR -> {
+            // Status could not be fetched. Check logs for details.
+        }
+        FEATURE_NOT_AVAILABLE -> {
+            // Restrictions do not apply to your app on this device.
+        }
+        DISABLED -> {
+            // Restrictions have been disabled by the user for your app.
+        }
+        API_30_BACKPORT, API_30, API_31 -> {
+            // Auto-removal of permissions is enabled
+            handleRestrictions(appRestrictionsStatus)
+        }
+    }
+}
+
+private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+
+private fun handleRestrictions(appRestrictionsStatus: Int) {
+    // Open the settings page
+    val intent: Intent = IntentCompat.createManageUnusedAppRestrictionsIntent(applicationContext, packageName)
+    resultLauncher.launch(intent)
+}
+```

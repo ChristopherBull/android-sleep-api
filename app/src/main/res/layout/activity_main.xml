@@ -30,14 +30,32 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
+        android:id="@+id/txtStatusPermissionRevokeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Auto-revoke permissions: "
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="@id/txtStatusPermissionTitle"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusPermissionTitle" />
+
+    <TextView
+        android:id="@+id/txtStatusPermissionRevoke"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="unknown"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/txtStatusPermissionRevokeTitle"
+        app:layout_constraintLeft_toRightOf="@id/txtStatusPermissionRevokeTitle" />
+
+    <TextView
         android:id="@+id/txtStatusSleepUpdatesTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sleep updates: "
         android:textStyle="bold"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintRight_toRightOf="@id/txtStatusPermissionTitle"
-        app:layout_constraintTop_toBottomOf="@id/txtStatusPermissionTitle" />
+        app:layout_constraintRight_toRightOf="@id/txtStatusPermissionRevokeTitle"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusPermissionRevokeTitle" />
 
     <TextView
         android:id="@+id/txtStatusSleepUpdates"
@@ -67,13 +85,24 @@
         app:layout_constraintLeft_toRightOf="@id/txtStatusSleepDataTitle" />
 
     <Button
+        android:id="@+id/btnDisableAutoRevokePermissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Disable Auto-Revoke"
+        android:onClick="clickUpdateAutoRevokePermissions"
+        app:layout_constraintTop_toBottomOf="@id/txtStatusSleepDataTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
         android:id="@+id/btnRefreshSleepData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Refresh"
         android:onClick="refreshSleepDataViews"
-        app:layout_constraintTop_toBottomOf="@id/txtStatusSleepDataTitle"
+        app:layout_constraintTop_toBottomOf="@id/btnDisableAutoRevokePermissions"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
